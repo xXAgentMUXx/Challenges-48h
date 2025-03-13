@@ -1,19 +1,17 @@
-version: '3.8'
+version: '5'
 
 services:
-  app:
+  ntp-server:
     build: .
-    container_name: mon_app
+    container_name: ntp-server
     ports:
-      - "8080:5000"
-     volumes:
-      - .:/app
-    environment:
-      - ENV_VAR=value
+      - "123:123/udp"   
+    volumes:
+      - ./ntp.conf:/etc/ntp.conf  
+    restart: always    
     networks:
-      - app_network
+      - ntp-network  
 
 networks:
-  app_network:
-    driver: bridge
-
+  ntp-network:  
+    driver: bridge  
