@@ -1,0 +1,5 @@
+nc -zv 127.0.0.1 8530
+Connection to 127.0.0.1 8530 port [tcp/*] succeeded!
+nc -zv 127.0.0.1 8080
+Connection to 127.0.0.1 8080 port [tcp/http-alt] succeeded!
+
