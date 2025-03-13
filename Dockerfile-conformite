@@ -1,0 +1,27 @@
+FROM debian:latest
+
+# Mise à jour et installation des paquets nécessaires
+RUN apt-get update && apt-get install -y \
+    bash \
+    jq \
+    curl \
+    openssh-server \
+    iputils-ping \
+    && mkdir -p /var/run/sshd \
+    && mkdir -p /etc/ssh \
+    && ssh-keygen -A \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Vérifier que le fichier sshd_config est bien installé
+RUN if [ ! -f /etc/ssh/sshd_config ]; then \
+        cp /usr/share/openssh/sshd_config /etc/ssh/sshd_config; \
+    else \
+        touch /etc/ssh/sshd_config; \
+    fi
+
+# Copier le script et lui donner les permissions d'exécution
+COPY ./agent_conformite.sh /usr/local/bin/agent_conformite.sh
+RUN chmod +x /usr/local/bin/agent_conformite.sh
+
+CMD ["/usr/local/bin/agent_conformite.sh"]

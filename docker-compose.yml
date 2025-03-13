@@ -1,4 +1,4 @@
-version: "5"  
+version: "5"
 services:
   ntp-server:
     build:
@@ -10,3 +10,25 @@ services:
     ports:
       - "123:123/udp"  
     restart: always
+
+  conformite-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile-conformite
+    container_name: conformite-agent
+    volumes:
+      - ./agent_conformite.sh:/usr/local/bin/agent_conformite.sh  
+    networks:
+      conformite-network:
+        ipv4_address: 10.0.0.10  
+    environment:
+      - AGENT_MODE=collect  
+    restart: always
+
+networks:
+  conformite-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.0.0.0/24"
