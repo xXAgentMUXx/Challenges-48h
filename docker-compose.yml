@@ -1,4 +1,5 @@
 version: "5"
+
 services:
   ntp-server:
     build:
@@ -8,7 +9,7 @@ services:
     volumes:
       - ./ntp.conf:/etc/ntp.conf  
     ports:
-      - "123:123/udp"  
+      - "9123:123/udp"  
     restart: always
 
   conformite-agent:
@@ -24,6 +25,19 @@ services:
     environment:
       - AGENT_MODE=collect  
     restart: always
+
+  proxy:
+    image: haproxy:latest
+    container_name: haproxy_proxy
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - "8530:8530"
+      - "8080:8080"
+      - "8053:53/udp"
+    restart: unless-stopped
+    networks:
+      - conformite-network
 
 networks:
   conformite-network:
