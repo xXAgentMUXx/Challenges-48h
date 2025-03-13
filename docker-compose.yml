@@ -6,3 +6,14 @@ services:
     container_name: mon_app
     ports:
       - "8080:5000"
+     volumes:
+      - .:/app
+    environment:
+      - ENV_VAR=value
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
