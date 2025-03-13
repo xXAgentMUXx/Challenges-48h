@@ -1,13 +1,12 @@
-# Utiliser l'image Debian
 FROM debian:latest
 
-# Mettre à jour les paquets et installer ntp
 RUN apt-get update && \
     apt-get install -y ntp && \
     apt-get clean
 
-# Exposer le port NTP
+RUN echo "server 10.0.0.42" >> /etc/ntp.conf && \
+    echo "server 10.0.1.42" >> /etc/ntp.conf
+
 EXPOSE 123/udp
 
-# Lancer ntpd en mode foreground
 CMD ["ntpd", "-g", "-n", "-c", "/etc/ntp.conf"]
