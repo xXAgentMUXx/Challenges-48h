@@ -1,3 +1,11 @@
+Lancement des services sur le Docker :
+
+- sudo docker compose up --build (peut être utilisé si modification d'un programme ou service)
+
+Arret des services sur le Docker :
+
+- sudo docker compose down
+
 Service proxy :
 
 nc -zv 127.0.0.1 8530
