@@ -35,4 +35,6 @@ Service Conformité :
      -d "$json_output" \
      --insecure
 
+si il y a rien c'est normal (probléme si connexion refusé)
+
 
