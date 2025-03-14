@@ -37,7 +37,7 @@ services:
     ports:
       - "8530:8530"
       - "8080:8080"
-      - "8053:8053/udp"
+      - "8053:8053/udp"# Rmplacer par 8053 car conflit de port avec 123
     restart: unless-stopped
     networks:
       - conformite-network
@@ -51,8 +51,8 @@ services:
       - ./rsyslog.conf:/etc/rsyslog.conf
       - ./logrotate.conf:/etc/logrotate.conf
     ports:
-      - "3025:3025/udp"
-      - "3025:3025/tcp"
+      - "3025:3025/udp" # Rmplacer par 3025 car conflit de port avec 6514
+      - "3025:3025/tcp" # Rmplacer par 3025 car conflit de port avec 6514
     restart: always
 
 networks:
