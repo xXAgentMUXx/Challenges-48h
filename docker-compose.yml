@@ -1,4 +1,4 @@
-version: "5"
+version: "3.9"
 
 services:
   ntp-server:
@@ -8,6 +8,7 @@ services:
     container_name: ntp-server
     volumes:
       - ./ntp.conf:/etc/ntp.conf  
+      - /var/log:/var/log  # Pour les logs
     ports:
       - "9123:123/udp"  
     restart: always
@@ -18,7 +19,8 @@ services:
       dockerfile: Dockerfile-conformite
     container_name: conformite-agent
     volumes:
-      - ./agent_conformite.sh:/usr/local/bin/agent_conformite.sh  
+      - ./agent_conformite.sh:/usr/local/bin/agent_conformite.sh
+      - /var/log:/var/log  # Pour les logs
     networks:
       conformite-network:
         ipv4_address: 10.0.0.10  
@@ -31,6 +33,7 @@ services:
     container_name: haproxy_proxy
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - /var/log:/var/log  # Pour les logs
     ports:
       - "8530:8530"
       - "8080:8080"
@@ -38,6 +41,19 @@ services:
     restart: unless-stopped
     networks:
       - conformite-network
+
+  rsyslog:
+    build:
+      context: .
+      dockerfile: Dockerfile-rsyslog  # Utiliser Dockerfile-rsyslog
+    container_name: rsyslog-container
+    volumes:
+      - ./rsyslog.conf:/etc/rsyslog.conf
+      - ./logrotate.conf:/etc/logrotate.conf
+    ports:
+      - "3025:3025/udp"
+      - "3025:3025/tcp"
+    restart: always
 
 networks:
   conformite-network:

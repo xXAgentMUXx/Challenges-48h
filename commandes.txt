@@ -1,5 +1,38 @@
+Service proxy :
+
 nc -zv 127.0.0.1 8530
 Connection to 127.0.0.1 8530 port [tcp/*] succeeded!
 nc -zv 127.0.0.1 8080
 Connection to 127.0.0.1 8080 port [tcp/http-alt] succeeded!
+
+Service de Journal :
+
+Sur pc local :
+
+logger -p local0.info "Test message from the host"
+
+sudo docker-compose logs rsyslog
+
+sur Docker :
+sudo docker exec -it rsyslog-container bash
+
+echo "test log entry" >> /var/log/syslog
+
+cat /var/log/syslog
+
+test log entry
+
+Serveur NTP :
+
+timedatectl
+
+Service Conformité :
+
+ sudo docker exec -it conformite-agent bash
+
+ curl -X POST "https://10.0.5.42:443" \
+     -H "Content-Type: application/json" \
+     -d "$json_output" \
+     --insecure
+
 

@@ -1,0 +1,16 @@
+FROM debian:latest
+
+# Installer rsyslog et logrotate
+RUN apt-get update && \
+    apt-get install -y rsyslog logrotate
+
+# Copier les fichiers de configuration
+COPY rsyslog.conf /etc/rsyslog.conf
+COPY logrotate.conf /etc/logrotate.conf
+
+# Exposer les ports nécessaires
+EXPOSE 514/udp
+EXPOSE 514/tcp
+
+# Lancer rsyslog en mode daemon
+CMD ["rsyslogd", "-n"]
